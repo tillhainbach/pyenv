@@ -21,6 +21,7 @@ OLDIFS="$IFS"
 set -E
 exec 3<&2 # preserve original stderr at fd 3
 
+# add comment
 
 lib() {
   parse_options() {
