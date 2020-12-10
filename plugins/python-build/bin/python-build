@@ -1493,8 +1493,12 @@ use_xcode_sdk_zlib() {
   if [ -d "$xc_sdk_path" ]; then
     echo "python-build: use zlib from xcode sdk"
     export CFLAGS="-I${xc_sdk_path}/usr/include ${CFLAGS}"
-    if is_mac -ge 1100; then
+    local xc_sdk_version="$(xcodebuild -showsdks | \
+      awk '/^$/{p=0};p; /macOS SDKs:/{p=1}' | tail -1 | cut -f3)"
+    local xc_sdk_version_n="${xc_sdk_version//[!0-9]/}"
+    if [  "$xc_sdk_version_n" = "110" ]; then
       export LDFLAGS="-L${xc_sdk_path}/usr/lib ${LDFLAGS}"
+      echo $LDFLAGS
     fi
   fi
 }
